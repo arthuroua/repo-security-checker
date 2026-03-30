@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OpenGradient Repo Risk Radar</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #040812;
+        --bg-2: #071222;
+        --panel: rgba(6, 17, 34, 0.9);
+        --line: rgba(18, 236, 255, 0.58);
+        --line-soft: rgba(18, 236, 255, 0.22);
+        --text: #cbf7ff;
+        --muted: #84d7e3;
+        --accent: #10ecff;
+        --danger: #ff5d92;
+        --warn: #ffcd5d;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: var(--text);
+        font-family: "Share Tech Mono", monospace;
+        background:
+          radial-gradient(circle at 12% 14%, rgba(16, 236, 255, 0.2), transparent 26%),
+          radial-gradient(circle at 86% 80%, rgba(46, 255, 168, 0.13), transparent 22%),
+          linear-gradient(165deg, var(--bg), var(--bg-2) 62%, #030711);
+      }
+      .wrap {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 34px 18px 32px;
+      }
+      h1 {
+        margin: 0 0 10px;
+        text-align: center;
+        font-family: "Orbitron", sans-serif;
+        font-size: clamp(28px, 5vw, 52px);
+        text-transform: uppercase;
+        color: var(--accent);
+        text-shadow: 0 0 12px rgba(16, 236, 255, 0.75), 0 0 30px rgba(16, 236, 255, 0.35);
+      }
+      .subtitle {
+        text-align: center;
+        color: var(--muted);
+        margin-bottom: 18px;
+      }
+      .panel {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 16px;
+        box-shadow: 0 0 20px rgba(16, 236, 255, 0.12), inset 0 0 18px rgba(16, 236, 255, 0.04);
+      }
+      .panel-title {
+        color: var(--accent);
+        font-family: "Orbitron", sans-serif;
+        letter-spacing: 0.06em;
+        margin-bottom: 10px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+        gap: 10px;
+      }
+      .benefit {
+        border: 1px solid var(--line-soft);
+        border-radius: 10px;
+        background: rgba(4, 14, 28, 0.85);
+        padding: 10px;
+      }
+      .benefit b { color: var(--accent); }
+      input, textarea, .output {
+        width: 100%;
+        background: rgba(3, 11, 23, 0.9);
+        border: 1px solid var(--line-soft);
+        color: var(--text);
+        border-radius: 10px;
+        padding: 12px;
+        font: inherit;
+      }
+      textarea {
+        min-height: 110px;
+        resize: vertical;
+      }
+      button {
+        border: 1px solid var(--accent);
+        background: linear-gradient(180deg, rgba(16, 236, 255, 0.26), rgba(16, 236, 255, 0.1));
+        color: var(--text);
+        border-radius: 8px;
+        padding: 10px 14px;
+        font: inherit;
+        cursor: pointer;
+      }
+      button:hover { box-shadow: 0 0 16px rgba(16, 236, 255, 0.35); }
+      button:disabled { opacity: 0.6; cursor: not-allowed; }
+      .status { margin: 10px 0 12px; color: var(--muted); }
+      .danger { color: var(--danger); }
+      .warn { color: var(--warn); }
+      .output {
+        min-height: 140px;
+        max-height: 420px;
+        overflow: auto;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+      }
+      .small { font-size: 13px; color: var(--muted); }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>OpenGradient Repo Risk Radar</h1>
+      <div class="subtitle">AI + heuristic GitHub repository security scanner for builders and users.</div>
+
+      <section class="panel">
+        <div class="panel-title">Why This Product Is Useful</div>
+        <div class="grid">
+          <div class="benefit">
+            <b>Fast trust check</b><br />
+            Before using a repo, you see risk score + verdict in seconds.
+          </div>
+          <div class="benefit">
+            <b>Real signals, not hype</b><br />
+            Looks at activity, license, suspicious install patterns, README quality.
+          </div>
+          <div class="benefit">
+            <b>AI explanation</b><br />
+            OpenGradient gives a readable security report, not just numbers.
+          </div>
+          <div class="benefit">
+            <b>Practical next steps</b><br />
+            Tells what to manually verify before you trust/deploy/integrate.
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-title">Repository Scan</div>
+        <div class="grid">
+          <input id="repoUrl" placeholder="https://github.com/owner/repo" value="https://github.com/ntclick/OPmeme" />
+          <input id="repoFocus" placeholder="focus (optional)" value="smart-contract and dependency risks" />
+        </div>
+        <div style="margin-top:10px;">
+          <button id="scanBtn">Run Security Scan</button>
+        </div>
+        <div class="status" id="scanStatus">Status: idle</div>
+        <div class="output" id="scanOutput">Report output...</div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-title">Tips</div>
+        <div class="small">
+          For better reliability in production, set <code>GITHUB_TOKEN</code> and <code>OG_PRIVATE_KEY</code> in Railway Variables.<br />
+          Health check: <code>/health</code>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      const repoUrlEl = document.getElementById("repoUrl");
+      const repoFocusEl = document.getElementById("repoFocus");
+      const scanBtn = document.getElementById("scanBtn");
+      const scanStatusEl = document.getElementById("scanStatus");
+      const scanOutputEl = document.getElementById("scanOutput");
+
+      function pretty(v) {
+        try { return JSON.stringify(v, null, 2); }
+        catch { return String(v); }
+      }
+
+      async function runScan() {
+        const repo_url = repoUrlEl.value.trim();
+        const focus = repoFocusEl.value.trim();
+        if (!repo_url) {
+          scanStatusEl.innerHTML = '<span class="danger">Status: repo URL is required</span>';
+          return;
+        }
+
+        scanBtn.disabled = true;
+        scanStatusEl.textContent = "Status: scanning repository...";
+        scanOutputEl.textContent = "Collecting repository metadata and running OpenGradient analysis...";
+
+        try {
+          const r = await fetch("/api/repo-security/check", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ repo_url, focus })
+          });
+          const data = await r.json();
+
+          if (!r.ok) {
+            scanOutputEl.textContent = data.details || data.error || "Unknown error";
+            scanStatusEl.innerHTML = '<span class="danger">Status: failed</span>';
+            return;
+          }
+
+          const lines = [
+            `Repository: ${data.repo}`,
+            `Provider: ${data.provider}`,
+            `Risk score: ${data.heuristics?.risk_score ?? "-"}`,
+            `Verdict: ${data.heuristics?.verdict ?? "-"}`,
+            "",
+            "Heuristic findings:",
+            pretty(data.heuristics?.findings || []),
+            "",
+            "AI analysis:",
+            data.analysis || "-"
+          ];
+          scanOutputEl.textContent = lines.join("\n");
+          scanStatusEl.textContent = "Status: scan complete";
+        } catch (error) {
+          scanOutputEl.textContent = error.message;
+          scanStatusEl.innerHTML = '<span class="danger">Status: network error</span>';
+        } finally {
+          scanBtn.disabled = false;
+        }
+      }
+
+      scanBtn.addEventListener("click", () => runScan().catch((e) => {
+        scanStatusEl.innerHTML = '<span class="danger">Status: failed</span>';
+        scanOutputEl.textContent = e.message;
+      }));
+    </script>
+  </body>
+</html>

@@ -1,0 +1,4 @@
+flask
+gunicorn
+requests
+opengradient==0.9.3
