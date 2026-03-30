@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#050a16"/>
+      <stop offset="100%" stop-color="#0a1730"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0c223f"/>
+      <stop offset="100%" stop-color="#0b1a31"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <style>
+      .title { font: 700 56px 'Arial', sans-serif; fill: #11ecff; }
+      .subtitle { font: 600 28px 'Arial', sans-serif; fill: #a7f7ff; }
+      .cap { font: 700 32px 'Arial', sans-serif; fill: #11ecff; }
+      .body { font: 600 24px 'Arial', sans-serif; fill: #d7fbff; }
+      .tiny { font: 600 20px 'Arial', sans-serif; fill: #95dbe5; }
+      .bad { fill: #ff6b9d; }
+      .good { fill: #3fffb0; }
+    </style>
+  </defs>
+
+  <rect width="1400" height="900" fill="url(#bg)"/>
+  <circle cx="160" cy="120" r="180" fill="#11ecff" opacity="0.08"/>
+  <circle cx="1260" cy="780" r="210" fill="#3fffb0" opacity="0.06"/>
+
+  <text x="700" y="92" text-anchor="middle" class="title" filter="url(#glow)">OPENGRADIENT REPO RISK RADAR</text>
+  <text x="700" y="135" text-anchor="middle" class="subtitle">When builders choose safety before "npm install chaos"</text>
+
+  <rect x="70" y="190" width="610" height="630" rx="18" fill="url(#panel)" stroke="#ff6b9d" stroke-width="2"/>
+  <rect x="720" y="190" width="610" height="630" rx="18" fill="url(#panel)" stroke="#11ecff" stroke-width="2"/>
+
+  <text x="375" y="245" text-anchor="middle" class="cap bad">WITHOUT CHECKING</text>
+  <text x="1025" y="245" text-anchor="middle" class="cap good">WITH REPO RISK RADAR</text>
+
+  <text x="120" y="300" class="body">• "Looks legit bro"</text>
+  <text x="120" y="340" class="body">• Copies random script from README</text>
+  <text x="120" y="380" class="body">• Approves wallet permissions</text>
+  <text x="120" y="420" class="body">• Sends tx, prays, regrets</text>
+
+  <rect x="110" y="470" width="530" height="280" rx="12" fill="#090f1f" stroke="#ff6b9d" stroke-opacity="0.5"/>
+  <text x="135" y="520" class="tiny">Status: critical vibes detected</text>
+  <text x="135" y="560" class="tiny">Risk score: ???</text>
+  <text x="135" y="600" class="tiny">Findings: "trust me bro" security model</text>
+  <text x="135" y="640" class="tiny">Outcome: funds in another dimension</text>
+  <text x="135" y="700" class="tiny">meme ending: "we learn from pain"</text>
+
+  <text x="770" y="300" class="body">• Paste GitHub repo URL</text>
+  <text x="770" y="340" class="body">• Get risk score + clear verdict</text>
+  <text x="770" y="380" class="body">• AI explains top security risks</text>
+  <text x="770" y="420" class="body">• Follow practical next checks</text>
+
+  <rect x="760" y="470" width="530" height="280" rx="12" fill="#090f1f" stroke="#11ecff" stroke-opacity="0.65"/>
+  <text x="785" y="520" class="tiny">Status: scan complete</text>
+  <text x="785" y="560" class="tiny">Risk score: 31 (medium)</text>
+  <text x="785" y="600" class="tiny">Top risk: unsafe install command in README</text>
+  <text x="785" y="640" class="tiny">Action: verify scripts + dependencies first</text>
+  <text x="785" y="700" class="tiny">outcome: fewer costly mistakes</text>
+
+  <text x="700" y="860" text-anchor="middle" class="subtitle">repo-security-checker-production.up.railway.app</text>
+</svg>

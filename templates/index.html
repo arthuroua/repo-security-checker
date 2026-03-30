@@ -9,16 +9,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
     <style>
       :root {
-        --bg: #040812;
-        --bg-2: #071222;
-        --panel: rgba(6, 17, 34, 0.9);
-        --line: rgba(18, 236, 255, 0.58);
-        --line-soft: rgba(18, 236, 255, 0.22);
-        --text: #cbf7ff;
-        --muted: #84d7e3;
-        --accent: #10ecff;
+        --bg: #080d16;
+        --bg-2: #0f1828;
+        --panel: rgba(14, 24, 40, 0.88);
+        --line: rgba(118, 167, 255, 0.36);
+        --line-soft: rgba(118, 167, 255, 0.2);
+        --text: #e4ecff;
+        --muted: #9bb0d8;
+        --accent: #8ab4ff;
         --danger: #ff5d92;
-        --warn: #ffcd5d;
+        --warn: #ffd27a;
       }
       * { box-sizing: border-box; }
       body {
@@ -27,97 +27,117 @@
         color: var(--text);
         font-family: "Share Tech Mono", monospace;
         background:
-          radial-gradient(circle at 12% 14%, rgba(16, 236, 255, 0.2), transparent 26%),
-          radial-gradient(circle at 86% 80%, rgba(46, 255, 168, 0.13), transparent 22%),
-          linear-gradient(165deg, var(--bg), var(--bg-2) 62%, #030711);
+          radial-gradient(circle at 10% 14%, rgba(138, 180, 255, 0.12), transparent 28%),
+          radial-gradient(circle at 88% 82%, rgba(166, 124, 255, 0.1), transparent 24%),
+          linear-gradient(165deg, var(--bg), var(--bg-2) 62%, #0a1220);
       }
       .wrap {
-        max-width: 980px;
+        max-width: 920px;
         margin: 0 auto;
-        padding: 34px 18px 32px;
+        padding: 46px 20px 42px;
       }
       h1 {
-        margin: 0 0 10px;
+        margin: 0 0 12px;
         text-align: center;
         font-family: "Orbitron", sans-serif;
-        font-size: clamp(28px, 5vw, 52px);
-        text-transform: uppercase;
+        font-size: clamp(30px, 4.7vw, 48px);
+        letter-spacing: 0.03em;
         color: var(--accent);
-        text-shadow: 0 0 12px rgba(16, 236, 255, 0.75), 0 0 30px rgba(16, 236, 255, 0.35);
+        text-shadow: 0 0 18px rgba(138, 180, 255, 0.24);
       }
       .subtitle {
         text-align: center;
         color: var(--muted);
-        margin-bottom: 18px;
+        margin: 0 auto 26px;
+        max-width: 760px;
+        line-height: 1.55;
       }
       .panel {
         background: var(--panel);
         border: 1px solid var(--line);
-        border-radius: 12px;
-        padding: 16px;
-        margin-bottom: 16px;
-        box-shadow: 0 0 20px rgba(16, 236, 255, 0.12), inset 0 0 18px rgba(16, 236, 255, 0.04);
+        border-radius: 14px;
+        padding: 20px;
+        margin-bottom: 18px;
+        box-shadow: 0 14px 36px rgba(0, 0, 0, 0.24);
       }
       .panel-title {
         color: var(--accent);
         font-family: "Orbitron", sans-serif;
-        letter-spacing: 0.06em;
-        margin-bottom: 10px;
+        letter-spacing: 0.04em;
+        margin-bottom: 14px;
+        font-size: 18px;
       }
       .grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-        gap: 10px;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 12px;
       }
       .benefit {
         border: 1px solid var(--line-soft);
-        border-radius: 10px;
-        background: rgba(4, 14, 28, 0.85);
-        padding: 10px;
+        border-radius: 12px;
+        background: rgba(8, 16, 30, 0.75);
+        padding: 14px;
+        line-height: 1.45;
       }
       .benefit b { color: var(--accent); }
       input, textarea, .output {
         width: 100%;
-        background: rgba(3, 11, 23, 0.9);
+        background: rgba(6, 13, 24, 0.9);
         border: 1px solid var(--line-soft);
         color: var(--text);
         border-radius: 10px;
-        padding: 12px;
+        padding: 13px 14px;
         font: inherit;
       }
+      input { min-height: 46px; }
       textarea {
-        min-height: 110px;
+        min-height: 120px;
         resize: vertical;
       }
       button {
         border: 1px solid var(--accent);
-        background: linear-gradient(180deg, rgba(16, 236, 255, 0.26), rgba(16, 236, 255, 0.1));
+        background: linear-gradient(180deg, rgba(138, 180, 255, 0.24), rgba(138, 180, 255, 0.09));
         color: var(--text);
         border-radius: 8px;
-        padding: 10px 14px;
+        padding: 10px 16px;
         font: inherit;
         cursor: pointer;
+        transition: box-shadow 0.18s ease, transform 0.18s ease;
       }
-      button:hover { box-shadow: 0 0 16px rgba(16, 236, 255, 0.35); }
+      button:hover {
+        box-shadow: 0 0 0 2px rgba(138, 180, 255, 0.22) inset;
+        transform: translateY(-1px);
+      }
       button:disabled { opacity: 0.6; cursor: not-allowed; }
-      .status { margin: 10px 0 12px; color: var(--muted); }
+      .status { margin: 12px 0 12px; color: var(--muted); }
       .danger { color: var(--danger); }
       .warn { color: var(--warn); }
       .output {
         min-height: 140px;
-        max-height: 420px;
+        max-height: 460px;
         overflow: auto;
         white-space: pre-wrap;
         overflow-wrap: anywhere;
         word-break: break-word;
+        line-height: 1.5;
       }
       .small { font-size: 13px; color: var(--muted); }
+      .scan-actions {
+        margin-top: 12px;
+        display: flex;
+        justify-content: flex-start;
+      }
+      @media (max-width: 640px) {
+        .wrap { padding: 26px 14px 30px; }
+        .panel { padding: 16px; }
+        .panel-title { font-size: 16px; }
+      }
     </style>
   </head>
   <body>
     <div class="wrap">
       <h1>OpenGradient Repo Risk Radar</h1>
-      <div class="subtitle">AI + heuristic GitHub repository security scanner for builders and users.</div>
+      <div class="subtitle">A calmer way to quickly evaluate GitHub repository risk before you trust, integrate, or deploy.</div>
 
       <section class="panel">
         <div class="panel-title">Why This Product Is Useful</div>
@@ -147,7 +167,7 @@
           <input id="repoUrl" placeholder="https://github.com/owner/repo" value="https://github.com/ntclick/OPmeme" />
           <input id="repoFocus" placeholder="focus (optional)" value="smart-contract and dependency risks" />
         </div>
-        <div style="margin-top:10px;">
+        <div class="scan-actions">
           <button id="scanBtn">Run Security Scan</button>
         </div>
         <div class="status" id="scanStatus">Status: idle</div>
