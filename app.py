@@ -248,7 +248,20 @@ async def _call_og_sdk_async(prompt: str) -> str:
         raise RuntimeError("OG_PRIVATE_KEY is not set")
 
     llm = og.LLM(private_key=OG_PRIVATE_KEY)
-    llm.ensure_opg_approval(opg_amount=OG_APPROVAL_OPG_AMOUNT)
+    errors = []
+    for kwargs in (
+        {"min_allowance": OG_APPROVAL_OPG_AMOUNT},
+        {"opg_amount": OG_APPROVAL_OPG_AMOUNT},
+        {},
+    ):
+        try:
+            llm.ensure_opg_approval(**kwargs)
+            break
+        except TypeError as exc:
+            errors.append(str(exc))
+            continue
+    else:
+        raise RuntimeError("ensure_opg_approval failed for all known signatures: " + " | ".join(errors))
     result = await llm.chat(
         model=_resolve_og_model(),
         messages=[
