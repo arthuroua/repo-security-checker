@@ -23,6 +23,7 @@ GITHUB_API_BASE = os.getenv("GITHUB_API_BASE", "https://api.github.com")
 REPO_CHECK_README_MAX_CHARS = int(os.getenv("REPO_CHECK_README_MAX_CHARS", "5000"))
 
 INFERENCE_PROVIDER = os.getenv("INFERENCE_PROVIDER", "opengradient_sdk").strip().lower()
+ENABLE_HEURISTIC_FALLBACK = os.getenv("ENABLE_HEURISTIC_FALLBACK", "true").strip().lower() in ("1", "true", "yes", "on")
 OG_PRIVATE_KEY = os.getenv("OG_PRIVATE_KEY")
 OG_SDK_MODEL = os.getenv("OG_SDK_MODEL", "GEMINI_2_5_FLASH")
 OG_SETTLEMENT_MODE = os.getenv("OG_SETTLEMENT_MODE", "PRIVATE").upper()
@@ -223,6 +224,39 @@ def _build_repo_security_prompt(snapshot: dict[str, Any], heuristics: dict[str, 
     )
 
 
+def _build_heuristic_fallback_report(snapshot: dict[str, Any], heuristics: dict[str, Any], focus: str) -> str:
+    repo = snapshot.get("repo") or {}
+    findings = heuristics.get("findings") or []
+    verdict = str(heuristics.get("verdict") or "unknown").upper()
+    score = heuristics.get("risk_score")
+    top_findings = findings[:5] if findings else ["No critical heuristic red flags were detected."]
+
+    lines = [
+        f"## Verdict",
+        f"{verdict} (risk_score: {score})",
+        "",
+        "## Why",
+    ]
+    lines.extend([f"- {item}" for item in top_findings])
+    lines.extend(
+        [
+            "",
+            "## Manual Checks",
+            "- Review recent commits and maintainer activity.",
+            "- Inspect install scripts and dependency changes before running anything locally.",
+            "- Verify LICENSE and SECURITY policy presence.",
+            "",
+            "## Safe Usage Recommendation",
+            "Use this repository in a sandbox first. Do not run scripts with wallet/private-key access until manual review is complete.",
+            "",
+            f"_Focus requested: {focus}_",
+            f"_Repository: {repo.get('html_url') or repo.get('full_name')}_",
+            "_Note: This report was generated via heuristic fallback because live LLM inference was unavailable._",
+        ]
+    )
+    return "\n".join(lines)
+
+
 def _resolve_og_model():
     if og is None:
         raise RuntimeError("OpenGradient SDK not installed")
@@ -387,6 +421,25 @@ def repo_security_check():
     except requests.RequestException as exc:
         return _json_error("Network error while fetching repository", 502, str(exc))
     except Exception as exc:
+        if ENABLE_HEURISTIC_FALLBACK:
+            try:
+                owner, repo, canonical_url = _parse_github_repo_input(repo_input)
+                snapshot = _fetch_repo_snapshot(owner, repo)
+                heuristics = _build_repo_heuristics(snapshot)
+                return jsonify(
+                    {
+                        "ok": True,
+                        "repo": canonical_url,
+                        "metadata": snapshot.get("repo") or {},
+                        "languages": snapshot.get("languages") or {},
+                        "heuristics": heuristics,
+                        "analysis": _build_heuristic_fallback_report(snapshot, heuristics, focus),
+                        "provider": "heuristic_fallback",
+                        "fallback_reason": str(exc),
+                    }
+                )
+            except Exception as fallback_exc:
+                return _json_error("Repo security check failed", 500, f"{exc}; fallback_error={fallback_exc}")
         return _json_error("Repo security check failed", 500, str(exc))
 
 
