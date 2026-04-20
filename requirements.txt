@@ -1,4 +1,4 @@
 flask
 gunicorn
 requests
-opengradient==0.9.9
+opengradient==1.0.0
